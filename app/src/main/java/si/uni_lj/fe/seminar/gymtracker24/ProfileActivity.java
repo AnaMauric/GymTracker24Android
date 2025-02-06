@@ -44,10 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         npWeight.setMaxValue(150);
         npWeight.setValue(70); // Privzeta vrednost
 
-        // Zaenkrat gumb še nič ne počne
-        btnSave.setOnClickListener(view -> {
-            // Tukaj boš kasneje dodal funkcijo za shranjevanje podatkov
-        });
+
         btnSave.setOnClickListener(view -> {
             String password = etPassword.getText().toString();
             String birthday = etBirthday.getText().toString();
