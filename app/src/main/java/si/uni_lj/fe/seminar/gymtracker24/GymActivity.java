@@ -10,6 +10,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,8 @@ public class GymActivity extends AppCompatActivity {
     private NumberPicker setsPicker;
     private EditText repsInput, weightInput, dateInput;
     private Button saveButton, deleteButton;
+    // Novo polje za prikaz zgodovine vadb
+    private TextView workoutHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +42,15 @@ public class GymActivity extends AppCompatActivity {
         dateInput = findViewById(R.id.dateInput);
         deleteButton = findViewById(R.id.deleteButton);
 
+        // Povežemo novo polje workoutHistory (TextView mora obstajati v activity_gym.xml z ustreznim id-jem)
+        workoutHistory = findViewById(R.id.workoutHistory);
+
+
         // Setup exercise dropdown (Spinner example data)
         String[] exercises = {"Squat", "Bench Press", "Deadlift", "Pull-up", "Shoulder Press"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, exercises);
         exerciseSpinner.setAdapter(adapter);
+
         deleteExerciseSpinner.setAdapter(adapter);
 
         // Setup sets picker (e.g., from 1 to 10 sets)
@@ -51,6 +59,8 @@ public class GymActivity extends AppCompatActivity {
 
         // Setup date picker
         dateInput.setOnClickListener(view -> showDatePicker());
+
+        new DobiVajaPodatke(this).izvediDobiVaje();
 
 
         saveButton.setOnClickListener(view -> {
@@ -88,6 +98,16 @@ public class GymActivity extends AppCompatActivity {
             Intent intent = new Intent(GymActivity.this, HomeActivity.class);
             startActivity(intent);
         });
+    }
+
+
+    /**
+     * Ta metoda se kliče iz DobiVajaPodatke, ko so podatki pridobljeni.
+     *
+     * @param history String, ki vsebuje oblikovano zgodovino vaj.
+     */
+    public void updateWorkoutHistory(String history) {
+        workoutHistory.setText(history);
     }
 
     private void showDatePicker() {

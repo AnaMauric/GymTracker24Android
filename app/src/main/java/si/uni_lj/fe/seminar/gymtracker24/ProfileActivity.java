@@ -44,6 +44,9 @@ public class ProfileActivity extends AppCompatActivity {
         npWeight.setMaxValue(150);
         npWeight.setValue(70); // Privzeta vrednost
 
+        // Pridobi uporabniške podatke ob odprtju profila
+        new DobiUserPodatke(this).izvediDobiPodatke();
+
 
         btnSave.setOnClickListener(view -> {
             String password = etPassword.getText().toString();
@@ -80,6 +83,12 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
             startActivity(intent);
         });
+    }
+
+
+    public void updateUserData(String birthday, int weight) {
+        etBirthday.setText(birthday);
+        npWeight.setValue(weight);
     }
 
     private void showDatePicker() {
