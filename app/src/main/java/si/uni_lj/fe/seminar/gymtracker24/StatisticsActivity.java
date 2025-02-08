@@ -22,6 +22,8 @@ public class StatisticsActivity extends AppCompatActivity {
     private EditText etExerciseName;
     private Button btnShowGraph;
     private LineChart graphView;
+    private Button btnShowGraph2;
+    private LineChart graphView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class StatisticsActivity extends AppCompatActivity {
         etExerciseName = findViewById(R.id.etExerciseName);
         btnShowGraph = findViewById(R.id.btnShowGraph);
         graphView = findViewById(R.id.graphView);
+
+        btnShowGraph2 = findViewById(R.id.btnShowGraph2);
+        graphView2 = findViewById(R.id.graphView2);
 
         // Nastavitev gumba za prikaz grafa
         btnShowGraph.setOnClickListener(view -> {
@@ -47,6 +52,16 @@ public class StatisticsActivity extends AppCompatActivity {
 
         // Osnovne nastavitve grafa
         setupGraph();
+
+
+        // Nastavitev gumba za prikaz grafa
+        btnShowGraph2.setOnClickListener(view -> {
+            // Klic metode za pridobivanje podatkov
+            new PridobiWeight(this, this::updateGraph2).izvediPridobiWeight();
+        });
+
+        // Osnovne nastavitve grafa
+        setupGraph2();
     }
 
     private void setupGraph() {
@@ -78,4 +93,39 @@ public class StatisticsActivity extends AppCompatActivity {
         graphView.setData(lineData);
         graphView.invalidate(); // Osveži graf
     }
+
+
+    private void setupGraph2() {
+        graphView2.getDescription().setEnabled(false);
+        graphView2.setDrawGridBackground(false);
+
+        XAxis xAxis = graphView2.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false);
+
+        YAxis leftAxis = graphView2.getAxisLeft();
+        leftAxis.setDrawGridLines(true);
+        graphView2.getAxisRight().setEnabled(false);
+    }
+
+
+    private void updateGraph2(List<Entry> entries) {
+        if (entries.isEmpty()) {
+            Toast.makeText(this, "Ni podatkov za prikaz!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LineDataSet dataSet = new LineDataSet(entries, "Teža (kg)");
+        dataSet.setColor(getResources().getColor(R.color.purple_500));
+        dataSet.setValueTextSize(10f);
+
+        LineData lineData = new LineData(dataSet);
+        graphView2.setData(lineData);
+        graphView2.invalidate(); // Osveži graf
+    }
+
+
+
+
 }

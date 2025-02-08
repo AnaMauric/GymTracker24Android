@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,10 +22,8 @@ import java.util.Calendar;
 public class GymActivity extends AppCompatActivity {
 
     private Spinner exerciseSpinner, deleteExerciseSpinner;
-    private NumberPicker setsPicker;
-    private EditText repsInput, weightInput, dateInput;
-    private Button saveButton, deleteButton;
-    // Novo polje za prikaz zgodovine vadb
+    private EditText setsInput, repsInput, weightInput, dateInput;
+    private Button saveButton, deleteButton, btnHome;
     private TextView workoutHistory;
 
     @Override
@@ -31,34 +31,25 @@ public class GymActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gym);
 
-        // Initialize UI components
+        btnHome = findViewById(R.id.btnHome);
+
         exerciseSpinner = findViewById(R.id.exerciseSpinner);
         weightInput = findViewById(R.id.weightInput);
-        setsPicker = findViewById(R.id.setsPicker);
+        setsInput = findViewById(R.id.setsInput);
         repsInput = findViewById(R.id.repsInput);
         saveButton = findViewById(R.id.saveButton);
+
+        workoutHistory = findViewById(R.id.workoutHistory);
 
         deleteExerciseSpinner = findViewById(R.id.deleteExerciseSpinner);
         dateInput = findViewById(R.id.dateInput);
         deleteButton = findViewById(R.id.deleteButton);
 
-        // Povežemo novo polje workoutHistory (TextView mora obstajati v activity_gym.xml z ustreznim id-jem)
-        workoutHistory = findViewById(R.id.workoutHistory);
-
 
         // Setup exercise dropdown (Spinner example data)
-        String[] exercises = {"Squat", "Bench Press", "Deadlift", "Pull-up", "Shoulder Press"};
+        String[] exercises = {"Assisted Pull-ups", "Back Squat", "Bench Press", "Biceps curls", "Deadlift", "Hack Squat", "Hip Thrusts", "Shoulder Press", "Triceps Rope Pull-down"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, exercises);
         exerciseSpinner.setAdapter(adapter);
-
-        deleteExerciseSpinner.setAdapter(adapter);
-
-        // Setup sets picker (e.g., from 1 to 10 sets)
-        setsPicker.setMinValue(1);
-        setsPicker.setMaxValue(10);
-
-        // Setup date picker
-        dateInput.setOnClickListener(view -> showDatePicker());
 
         new DobiVajaPodatke(this).izvediDobiVaje();
 
@@ -69,15 +60,18 @@ public class GymActivity extends AppCompatActivity {
             String weightText = weightInput.getText().toString().trim();
             float weight = weightText.isEmpty() ? 0.0f : Float.parseFloat(weightText);
 
-            int sets = setsPicker.getValue();
+            int sets = Integer.parseInt(setsInput.getText().toString());
 
             String reps = repsInput.getText().toString();
 
             VpisVaje vpis = new VpisVaje(exercise_name, weight, sets, reps, this);
             vpis.izvediVpiseVaj();
 
-            //Toast.makeText(ProfileActivity.this, rezultat, Toast.LENGTH_SHORT).show();
         });
+
+
+        deleteExerciseSpinner.setAdapter(adapter);
+        dateInput.setOnClickListener(view -> showDatePicker());
 
         deleteButton.setOnClickListener(view -> {
             String exercise_name = deleteExerciseSpinner.getSelectedItem().toString();
@@ -85,19 +79,14 @@ public class GymActivity extends AppCompatActivity {
 
             IzbrisVaje izbris = new IzbrisVaje(exercise_name, date, this);
             izbris.izvediIzbriseVaj();
-
-            //Toast.makeText(ProfileActivity.this, rezultat, Toast.LENGTH_SHORT).show();
         });
 
-
-
-
-
-        Button btnBackToHome = findViewById(R.id.btnBackToHome);
-        btnBackToHome.setOnClickListener(view -> {
+        btnHome.setOnClickListener(v -> {
             Intent intent = new Intent(GymActivity.this, HomeActivity.class);
             startActivity(intent);
+            finish(); // Zapre trenutno aktivnost
         });
+
     }
 
 

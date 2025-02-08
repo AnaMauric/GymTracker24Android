@@ -2,15 +2,30 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#89CFF0"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
 
-        <!-- New Workout Section -->
+        <!-- Home gumb na levi strani -->
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:backgroundTint="#00008B"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"/>
+
+
+        <!-- Nov trening -->
         <TextView
             android:id="@+id/newWorkoutTitle"
             android:layout_width="wrap_content"
@@ -18,67 +33,69 @@
             android:text="New Workout"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginBottom="8dp"/>
 
         <Spinner
             android:id="@+id/exerciseSpinner"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/newWorkoutTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:id="@+id/weightLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weight (kg)"
-            app:layout_constraintTop_toBottomOf="@id/exerciseSpinner"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginBottom="4dp"/>
 
         <EditText
             android:id="@+id/weightInput"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
+            android:layout_marginBottom="16dp"
             android:hint="0.0"
-            app:layout_constraintTop_toBottomOf="@id/weightLabel"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/setsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sets"
-            app:layout_constraintTop_toBottomOf="@id/weightInput"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginBottom="4dp"/>
 
-        <NumberPicker
-            android:id="@+id/setsPicker"
+        <EditText
+            android:id="@+id/setsInput"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:inputType="number"
+            android:hint="0"/>
+
+
+        <TextView
+            android:id="@+id/repsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/setsLabel"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="Reps"
+            android:layout_marginBottom="4dp"/>
 
         <EditText
             android:id="@+id/repsInput"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="Reps"
-            app:layout_constraintTop_toBottomOf="@id/setsPicker"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:hint="0"
+            android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Save"
-            app:layout_constraintTop_toBottomOf="@id/repsInput"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Display Existing Workouts -->
+        <!-- Zgodovina vadb -->
         <TextView
             android:id="@+id/workoutHistoryTitle"
             android:layout_width="wrap_content"
@@ -86,21 +103,18 @@
             android:text="Workout History"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/saveButton"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:id="@+id/workoutHistory"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/workoutHistoryTitle"
-            android:text="Zgodovina vadb bo prikazana tukaj"
+            android:text="Your workouts will be shown here."
             android:padding="16dp"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Delete Workout Section -->
+        <!-- Brisanje vadbe -->
         <TextView
             android:id="@+id/deleteWorkoutTitle"
             android:layout_width="wrap_content"
@@ -108,49 +122,32 @@
             android:text="Delete Workout"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/workoutHistory"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginBottom="8dp"/>
 
         <Spinner
             android:id="@+id/deleteExerciseSpinner"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/deleteWorkoutTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginBottom="16dp"/>
 
         <EditText
             android:id="@+id/dateInput"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Select Date"
             android:focusable="false"
             android:clickable="true"
-            app:layout_constraintTop_toBottomOf="@id/deleteExerciseSpinner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="16dp" />
+            android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Delete"
-            app:layout_constraintTop_toBottomOf="@id/dateInput"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp"/>
 
-        <Button
-            android:id="@+id/btnBackToHome"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Back to Home"
-            app:layout_constraintTop_toBottomOf="@id/deleteButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="16dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>

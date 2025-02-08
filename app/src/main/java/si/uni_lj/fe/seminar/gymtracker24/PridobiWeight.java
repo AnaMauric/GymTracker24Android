@@ -18,22 +18,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PridobiWeightAndDate {
+public class PridobiWeight {
     private final Context context;
-    private final String exerciseName;
     private final OnDataReceivedListener listener;
 
     public interface OnDataReceivedListener {
         void onDataReceived(List<Entry> entries);
     }
 
-    public PridobiWeightAndDate(Context context, String exerciseName, OnDataReceivedListener listener) {
+    public PridobiWeight(Context context, OnDataReceivedListener listener) {
         this.context = context;
-        this.exerciseName = exerciseName;
         this.listener = listener;
     }
 
-    public void izvediPridobiWeightInDate() {
+    public void izvediPridobiWeight() {
         new GetDataTask().execute();
     }
 
@@ -54,7 +52,7 @@ public class PridobiWeightAndDate {
 
                 // Pridobi base URL iz strings.xml
                 String baseUrl = context.getString(R.string.URL_base_storitve);
-                String apiUrl = baseUrl + "graphStats.php?username=" + username + "&exercise=" + exerciseName;
+                String apiUrl = baseUrl + "weight.php?username=" + username;
 
 
                 //String username = "anamauric"; // Zamenjaj s pravim username
