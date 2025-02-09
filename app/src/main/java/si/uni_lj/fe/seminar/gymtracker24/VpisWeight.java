@@ -1,5 +1,4 @@
 package si.uni_lj.fe.seminar.gymtracker24;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -14,30 +13,26 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-class VpisUserPodatkov {
+class VpisWeight {
 
-    private final String username, password, birthday, urlStoritve;
+    private final String username, urlStoritve;
     private final float weight;
     private final Activity callerActivity;
 
-    public VpisUserPodatkov(String password, String birthday, float weight, Activity callerActivity){
+    public VpisWeight(float weight, Activity callerActivity){
 
         this.callerActivity = callerActivity;
 
         SharedPreferences sharedPreferences = callerActivity.getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
         this.username = sharedPreferences.getString("USERNAME", "");
-
-        this.password = password;
-        this.birthday = birthday;
         this.weight = weight;
 
-        urlStoritve = callerActivity.getString(R.string.URL_base_storitve) + callerActivity.getString(R.string.URL_rel_vpis_user);
+        urlStoritve = callerActivity.getString(R.string.URL_base_storitve) + callerActivity.getString(R.string.URL_rel_vpis_weight);
+}
 
-    }
-
-    public void izvediVpise() {
+    public void izvediVpiseWeight() {
         new Thread(() -> {
-            String rezultat = vpisPodatkov();
+            String rezultat = vpisWeight();
 
             callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
@@ -45,8 +40,7 @@ class VpisUserPodatkov {
         }).start();
     }
 
-
-    public String vpisPodatkov() {
+    public String vpisWeight() {
         ConnectivityManager connMgr = (ConnectivityManager) callerActivity.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo;
 
@@ -58,9 +52,9 @@ class VpisUserPodatkov {
 
         if (networkInfo != null && networkInfo.isConnected()) {
             try {
-                int responseCode = connect(username, password, birthday, weight);
+                int responseCode = connect(username, weight);
 
-                if (responseCode == 200 || responseCode == 204) {
+                if (responseCode == 200 || responseCode == 201) {
                     return "Podatki uspešno posodobljeni!";
                 } else {
                     return "Napaka pri shranjevanju podatkov. Koda: " + responseCode;
@@ -74,13 +68,14 @@ class VpisUserPodatkov {
         }
     }
 
-    private int connect(String username, String password, String birthday, float weight) throws Exception {
+
+    private int connect(String username, float weight) throws Exception {
         URL url = new URL(urlStoritve);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setReadTimeout(5000);
         conn.setConnectTimeout(10000);
-        conn.setRequestMethod("PUT");
+        conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoInput(true);
         conn.setDoOutput(true);
@@ -88,8 +83,6 @@ class VpisUserPodatkov {
         try {
             JSONObject json = new JSONObject();
             json.put("username", username);
-            json.put("password", password);
-            json.put("birthday", birthday);
             json.put("weight", weight);
 
             OutputStream os = conn.getOutputStream();
@@ -104,4 +97,7 @@ class VpisUserPodatkov {
 
         return conn.getResponseCode();
     }
+
+
+
 }

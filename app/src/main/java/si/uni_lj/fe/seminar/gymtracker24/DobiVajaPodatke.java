@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -18,8 +17,7 @@ import java.net.URL;
 
 class DobiVajaPodatke {
 
-    private final String username;
-    private final String urlStoritve;
+    private final String username, urlStoritve;
     private final Activity callerActivity;
     private final GymActivity gymActivity;
 
@@ -27,11 +25,9 @@ class DobiVajaPodatke {
         this.gymActivity = gymActivity;
         this.callerActivity = gymActivity;
 
-        // Preberi username iz SharedPreferences
         SharedPreferences sharedPreferences = callerActivity.getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
         this.username = sharedPreferences.getString("USERNAME", "");
 
-        // Sestavi URL, pri čemer se uporabniško ime poda kot parameter
         urlStoritve = callerActivity.getString(R.string.URL_base_storitve) + "exercises.php?username=" + username;
     }
 
@@ -46,7 +42,6 @@ class DobiVajaPodatke {
     }
 
     public String dobiVaje() {
-        // Preveri internetno povezavo
         ConnectivityManager connMgr = (ConnectivityManager) callerActivity.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo;
 
@@ -77,9 +72,6 @@ class DobiVajaPodatke {
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
 
-        // Log za preverjanje URL-ja
-        Log.d("DobiVajaPodatke", "Pridobivanje vaj iz: " + urlStoritve);
-
         int responseCode = conn.getResponseCode();
         if (responseCode == 200) {
             InputStream inputStream = conn.getInputStream();
@@ -91,7 +83,6 @@ class DobiVajaPodatke {
             }
             reader.close();
 
-            // Predpostavljamo, da strežnik vrne JSONArray z vajami
             JSONArray jsonArray = new JSONArray(response.toString());
             StringBuilder workoutHistory = new StringBuilder();
 
@@ -111,7 +102,6 @@ class DobiVajaPodatke {
                         .append(", Reps: ").append(reps)
                         .append("\n");
             }
-            // Posodobi UI v GymActivity
             callerActivity.runOnUiThread(() -> gymActivity.updateWorkoutHistory(workoutHistory.toString()));
 
             return "Vaje pridobljene!";

@@ -19,12 +19,11 @@ import java.net.URL;
 
 class IzbrisUserja {
 
-    private final String username;
-    private final String urlStoritve;
+    private final String username, urlStoritve;
     private final Activity callerActivity;
 
     public IzbrisUserja(Activity callerActivity) {
-        // Preberi podatke iz SharedPreferences
+
         SharedPreferences sharedPreferences = callerActivity.getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
         this.username = sharedPreferences.getString("USERNAME", "");
         this.callerActivity = callerActivity;
@@ -38,7 +37,6 @@ class IzbrisUserja {
         new Thread(() -> {
             String rezultat = izbris();
 
-            // Posodobitev UI-ja mora teči na glavnem threadu
             callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
             );
@@ -47,7 +45,6 @@ class IzbrisUserja {
 
 
     private String izbris() {
-        // Preverimo internetno povezavo
         ConnectivityManager connMgr = (ConnectivityManager) callerActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo;
 
@@ -76,7 +73,6 @@ class IzbrisUserja {
     }
 
     private int connect(String username) throws IOException {
-        Log.d("izbrisUserja", "Poskušam povezavo na: " + urlStoritve);
         URL url = new URL(urlStoritve);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -85,9 +81,7 @@ class IzbrisUserja {
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoInput(true);
-        conn.setDoOutput(true); // Potrebno za pošiljanje podatkov
-
-        Log.d("izbrisUserja", "Povezava vzpostavljena, pošiljam podatke...");
+        conn.setDoOutput(true);
 
         try {
             JSONObject json = new JSONObject();
@@ -105,8 +99,6 @@ class IzbrisUserja {
         }
 
         int responseCode = conn.getResponseCode();
-        Log.d("izbrisUserja", "Odziv strežnika: " + responseCode);
-
         return responseCode;
     }
 }

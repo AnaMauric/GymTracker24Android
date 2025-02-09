@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -16,9 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class DobiUserPodatke {
-
-    private final String username;
-    private final String urlStoritve;
+    private final String username, urlStoritve;
     private final Activity callerActivity;
     private final ProfileActivity profileActivity;
 
@@ -26,7 +22,6 @@ class DobiUserPodatke {
         this.profileActivity = profileActivity;
         this.callerActivity = profileActivity;
 
-        // Preberi username iz SharedPreferences
         SharedPreferences sharedPreferences = callerActivity.getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
         this.username = sharedPreferences.getString("USERNAME", "");
 
@@ -40,7 +35,6 @@ class DobiUserPodatke {
     }
 
     public String dobiPodatke() {
-        // Preverimo internetno povezavo
         ConnectivityManager connMgr = (ConnectivityManager) callerActivity.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo;
 
@@ -70,9 +64,6 @@ class DobiUserPodatke {
         conn.setConnectTimeout(10000);
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
-
-        // Log za preverjanje URL-ja
-        Log.d("DobiUserPodatke", "Pridobivanje podatkov iz: " + urlStoritve);
 
         int responseCode = conn.getResponseCode();
         if (responseCode == 200) {

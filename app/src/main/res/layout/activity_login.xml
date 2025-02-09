@@ -11,7 +11,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GymTracker24"
+        android:text="@string/gymtracker24"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#000000"
@@ -21,14 +21,14 @@
         android:id="@+id/etUsername"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="@string/username"
         android:layout_marginBottom="16dp" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:layout_marginBottom="16dp" />
 
@@ -36,7 +36,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Log in"
+        android:text="@string/log_in"
         android:backgroundTint="#007BFF"
         android:textColor="#FFFFFF" />
 

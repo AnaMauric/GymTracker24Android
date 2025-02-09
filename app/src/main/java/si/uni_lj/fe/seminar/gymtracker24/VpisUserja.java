@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -17,65 +15,57 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+interface LoginCallback {
+    void onLoginResult(int statusCode);
+}
+
 class VpisUserja {
-    private final String username;
-    private final String password;
-    private final String urlStoritve;
+    private final String username, password, urlStoritve;
     private final Activity callerActivity;
 
     public VpisUserja(Activity callerActivity) {
-        // Preberi podatke iz SharedPreferences
+
         SharedPreferences sharedPreferences = callerActivity.getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
         this.username = sharedPreferences.getString("USERNAME", "");
         this.password = sharedPreferences.getString("PASSWORD", "");
         this.callerActivity = callerActivity;
 
         urlStoritve = callerActivity.getString(R.string.URL_base_storitve) + callerActivity.getString(R.string.URL_rel_vpis_user);
-
     }
 
-    public void izvediPrijavo() {
+    public void izvediPrijavo(LoginCallback callback) {
         new Thread(() -> {
-            String rezultat = vpis();
+            int responseCode = vpis();
 
-            // Posodobitev UI-ja mora teči na glavnem threadu
-            callerActivity.runOnUiThread(() ->
-                    Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
-            );
+            callerActivity.runOnUiThread(() -> {
+                callback.onLoginResult(responseCode);
+            });
         }).start();
     }
 
-    private String vpis() {
-        // Preverimo internetno povezavo
+    private int vpis() {
         ConnectivityManager connMgr = (ConnectivityManager) callerActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo;
 
         try {
             networkInfo = connMgr.getActiveNetworkInfo();
         } catch (Exception e) {
-            return callerActivity.getResources().getString(R.string.napaka_omrezje);
+            return 0;
         }
 
         if (networkInfo != null && networkInfo.isConnected()) {
             try {
-                int responseCode = connect(username, password);
-
-                if (responseCode == 200 || responseCode == 201) {
-                    return callerActivity.getResources().getString(R.string.rest_uporabnik_uspesno);
-                } else {
-                    return callerActivity.getResources().getString(R.string.rest_nepricakovan_odgovor) + " " + responseCode;
-                }
+                return connect(username, password);
             } catch (IOException e) {
                 e.printStackTrace();
-                return callerActivity.getResources().getString(R.string.napaka_storitev);
+                return 500;
             }
         } else {
-            return callerActivity.getResources().getString(R.string.napaka_omrezje);
+            return 0;
         }
     }
 
     private int connect(String username, String password) throws IOException {
-        Log.d("VpisUserja", "Poskušam povezavo na: " + urlStoritve);
         URL url = new URL(urlStoritve);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -84,9 +74,7 @@ class VpisUserja {
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoInput(true);
-        conn.setDoOutput(true); // Potrebno za pošiljanje podatkov
-
-        Log.d("VpisUserja", "Povezava vzpostavljena, pošiljam podatke...");
+        conn.setDoOutput(true);
 
         try {
             JSONObject json = new JSONObject();
@@ -100,16 +88,10 @@ class VpisUserja {
             writer.close();
             os.close();
         } catch (Exception e) {
-            Log.e("VpisUserja", "Napaka pri pošiljanju podatkov: " + e.getMessage());
             e.printStackTrace();
         }
 
         int responseCode = conn.getResponseCode();
-        Log.d("VpisUserja", "Odziv strežnika: " + responseCode);
-
         return responseCode;
     }
-
 }
-
-

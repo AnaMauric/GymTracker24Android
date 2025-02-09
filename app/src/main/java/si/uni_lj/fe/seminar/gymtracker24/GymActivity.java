@@ -3,16 +3,14 @@ package si.uni_lj.fe.seminar.gymtracker24;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -45,14 +43,11 @@ public class GymActivity extends AppCompatActivity {
         dateInput = findViewById(R.id.dateInput);
         deleteButton = findViewById(R.id.deleteButton);
 
-
-        // Setup exercise dropdown (Spinner example data)
-        String[] exercises = {"Assisted Pull-ups", "Back Squat", "Bench Press", "Biceps curls", "Deadlift", "Hack Squat", "Hip Thrusts", "Shoulder Press", "Triceps Rope Pull-down"};
+        String[] exercises = {"Assisted Pull-ups", "Back Squat", "Bench Press", "Biceps Curls", "Deadlift", "Hack Squat", "Hip Thrusts", "Shoulder Press", "Triceps Rope Pull-downs"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, exercises);
         exerciseSpinner.setAdapter(adapter);
 
         new DobiVajaPodatke(this).izvediDobiVaje();
-
 
         saveButton.setOnClickListener(view -> {
             String exercise_name = exerciseSpinner.getSelectedItem().toString();
@@ -67,6 +62,9 @@ public class GymActivity extends AppCompatActivity {
             VpisVaje vpis = new VpisVaje(exercise_name, weight, sets, reps, this);
             vpis.izvediVpiseVaj();
 
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                new DobiVajaPodatke(this).izvediDobiVaje();
+            }, 1000);
         });
 
 
@@ -79,12 +77,16 @@ public class GymActivity extends AppCompatActivity {
 
             IzbrisVaje izbris = new IzbrisVaje(exercise_name, date, this);
             izbris.izvediIzbriseVaj();
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                new DobiVajaPodatke(this).izvediDobiVaje();
+            }, 1000);
         });
 
         btnHome.setOnClickListener(v -> {
             Intent intent = new Intent(GymActivity.this, HomeActivity.class);
             startActivity(intent);
-            finish(); // Zapre trenutno aktivnost
+            finish();
         });
 
     }
@@ -108,7 +110,6 @@ public class GymActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
-                    // Prikaz izbranega datuma v EditText polju
                     String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
                     dateInput.setText(selectedDate);
                 },

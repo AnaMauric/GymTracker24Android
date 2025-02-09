@@ -7,11 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,28 +24,27 @@ public class LoginActivity extends AppCompatActivity {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
 
-            // Preveri, če sta polji prazni
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vnesite uporabniško ime in geslo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insert username and password", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Shrani v SharedPreferences
             SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("USERNAME", username);
             editor.putString("PASSWORD", password);
-            editor.apply();  // Shranimo asinkrono
+            editor.apply();
 
-            // Ustvari objekt in pokliči metodo za prijavo
             VpisUserja vpis = new VpisUserja(this);
-            vpis.izvediPrijavo();  // Ta metoda mora obstajati v VpisUserja
-
-
-            // Ustvari Intent za prehod na HomeActivity
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish(); // Zaključi LoginActivity, da se uporabnik ne vrne nazaj
+            vpis.izvediPrijavo(statusCode -> {
+                if (statusCode == 200 || statusCode == 201) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login failed! Error: " + statusCode, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

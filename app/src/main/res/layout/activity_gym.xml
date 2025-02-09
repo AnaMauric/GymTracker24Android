@@ -17,7 +17,7 @@
             android:id="@+id/btnHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="@string/home"
             android:backgroundTint="#00008B"
             android:textColor="#FFFFFF"
             android:layout_gravity="start"
@@ -30,7 +30,7 @@
             android:id="@+id/newWorkoutTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Workout"
+            android:text="@string/new_workout"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
@@ -45,7 +45,7 @@
             android:id="@+id/weightLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weight (kg)"
+            android:text="@string/weight_kg"
             android:layout_marginBottom="4dp"/>
 
         <EditText
@@ -53,14 +53,14 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="0.0"
+            android:hint="@string/_0_0"
             android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/setsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sets"
+            android:text="@string/sets"
             android:layout_marginBottom="4dp"/>
 
         <EditText
@@ -69,28 +69,28 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:inputType="number"
-            android:hint="0"/>
+            android:hint="@string/_0"/>
 
 
         <TextView
             android:id="@+id/repsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reps"
+            android:text="@string/reps"
             android:layout_marginBottom="4dp"/>
 
         <EditText
             android:id="@+id/repsInput"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="0"
+            android:hint="@string/_0"
             android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="@string/save"
             android:backgroundTint="#007BFF"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="24dp"/>
@@ -100,7 +100,7 @@
             android:id="@+id/workoutHistoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Workout History"
+            android:text="@string/workout_history"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
@@ -109,7 +109,7 @@
             android:id="@+id/workoutHistory"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Your workouts will be shown here."
+            android:text="@string/your_workouts_will_be_shown_here"
             android:padding="16dp"
             android:textSize="16sp"
             android:layout_marginBottom="24dp"/>
@@ -119,7 +119,7 @@
             android:id="@+id/deleteWorkoutTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete Workout"
+            android:text="@string/delete_workout"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
@@ -134,7 +134,7 @@
             android:id="@+id/dateInput"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="Select Date"
+            android:hint="@string/select_date"
             android:focusable="false"
             android:clickable="true"
             android:layout_marginBottom="16dp"/>
@@ -143,7 +143,7 @@
             android:id="@+id/deleteButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Delete"
+            android:text="@string/delete"
             android:backgroundTint="#007BFF"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="24dp"/>

@@ -1,36 +1,27 @@
 package si.uni_lj.fe.seminar.gymtracker24;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 class IzbrisVaje {
-
-    private final String username;
-    private final String exercise_name;
-    private final String date;
-
-    private final String urlStoritve;
+    private final String username, exercise_name, date, urlStoritve;
     private final Activity callerActivity;
 
     public IzbrisVaje(String exercise_name, String date, Activity callerActivity){
 
         this.callerActivity = callerActivity;
 
-        // Preberi username iz SharedPreferences
         SharedPreferences sharedPreferences = callerActivity.getSharedPreferences("UserPrefs", Activity.MODE_PRIVATE);
         this.username = sharedPreferences.getString("USERNAME", "");
 
@@ -45,7 +36,6 @@ class IzbrisVaje {
         new Thread(() -> {
             String rezultat = izbrisVaj();
 
-            // Posodobitev UI-ja mora teči na glavnem threadu
             callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
             );
@@ -53,7 +43,6 @@ class IzbrisVaje {
     }
 
     public String izbrisVaj() {
-        // Preverimo internetno povezavo
         ConnectivityManager connMgr = (ConnectivityManager) callerActivity.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo;
 
@@ -90,17 +79,13 @@ class IzbrisVaje {
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoInput(true);
-        conn.setDoOutput(true); // Potrebno za pošiljanje podatkov
-
-        // Log za preverjanje URL-ja
-        Log.d("izbrisVaje", "Pošiljanje podatkov na: " + urlStoritve);
+        conn.setDoOutput(true);
 
         try {
             JSONObject json = new JSONObject();
             json.put("username", username);
             json.put("exercise_name", exercise_name);
             json.put("date", date);
-
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));

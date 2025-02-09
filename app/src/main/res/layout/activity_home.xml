@@ -11,7 +11,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GymTracker24"
+        android:text="@string/gymtracker24"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#000000"
@@ -21,7 +21,7 @@
         android:id="@+id/btnGym"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Gym"
+        android:text="@string/gym"
         android:backgroundTint="#007BFF"
         android:textColor="#FFFFFF"
         android:layout_marginBottom="16dp"/>
@@ -30,7 +30,7 @@
         android:id="@+id/btnStatistics"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Statistics"
+        android:text="@string/statistics"
         android:backgroundTint="#007BFF"
         android:textColor="#FFFFFF"
         android:layout_marginBottom="16dp"/>
@@ -39,7 +39,7 @@
         android:id="@+id/btnProfile"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Profile"
+        android:text="@string/profile"
         android:backgroundTint="#007BFF"
         android:textColor="#FFFFFF"/>
 

@@ -1,6 +1,5 @@
 package si.uni_lj.fe.seminar.gymtracker24;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -41,22 +40,15 @@ public class PridobiWeight {
             List<Entry> entries = new ArrayList<>();
             try {
 
-                // Pridobi username iz SharedPreferences
                 SharedPreferences sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                 String username = sharedPreferences.getString("USERNAME", "");
 
-                // Preveri, če je username prazen
                 if (username.isEmpty()) {
-                    return entries; // Vrni prazno listo, da onPostExecute sproži napako
+                    return entries;
                 }
 
-                // Pridobi base URL iz strings.xml
                 String baseUrl = context.getString(R.string.URL_base_storitve);
                 String apiUrl = baseUrl + "weight.php?username=" + username;
-
-
-                //String username = "anamauric"; // Zamenjaj s pravim username
-                //String apiUrl = "http://192.168.1.103/gymvaja2/graphStats.php?username=" + username + "&exercise=" + exerciseName;
 
                 URL url = new URL(apiUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -76,7 +68,7 @@ public class PridobiWeight {
                     String date = obj.getString("date");
                     float weight = (float) obj.getDouble("weight");
 
-                    entries.add(new Entry(i, weight)); // X = index, Y = weight
+                    entries.add(new Entry(i, weight));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -87,7 +79,7 @@ public class PridobiWeight {
         @Override
         protected void onPostExecute(List<Entry> entries) {
             if (entries.isEmpty()) {
-                Toast.makeText(context, "Napaka pri pridobivanju podatkov!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error while retrieving data!", Toast.LENGTH_SHORT).show();
             }
             listener.onDataReceived(entries);
         }

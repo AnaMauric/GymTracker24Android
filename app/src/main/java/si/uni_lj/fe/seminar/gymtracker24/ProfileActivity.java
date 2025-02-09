@@ -1,5 +1,6 @@
 package si.uni_lj.fe.seminar.gymtracker24;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,8 +8,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,61 +15,62 @@ import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText etUsername, etPassword, etBirthday;
-    private NumberPicker npWeight;
-    private Button btnSave;
+    private EditText etUsername, etPassword, etBirthday, npWeight;
+    private Button btnSave, btnLogout, btnBackToHome, btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Poveži UI elemente
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         etBirthday = findViewById(R.id.etBirthday);
         npWeight = findViewById(R.id.npWeight);
         btnSave = findViewById(R.id.btnSave);
 
-        // Nastavimo DatePicker na klik EditText-a
         etBirthday.setOnClickListener(view -> showDatePicker());
 
-        // Preberi podatke iz SharedPreferences in jih vpiši v polja
+        btnLogout = findViewById(R.id.btnLogout);
+        btnBackToHome = findViewById(R.id.btnHome);
+        btnDelete = findViewById(R.id.btnDelete);
+
         loadUserData();
 
-
-        // Nastavimo NumberPicker za težo (od 30 do 150 kg)
-        npWeight.setMinValue(30);
-        npWeight.setMaxValue(150);
-        npWeight.setValue(70); // Privzeta vrednost
-
-        // Pridobi uporabniške podatke ob odprtju profila
         new DobiUserPodatke(this).izvediDobiPodatke();
-
 
         btnSave.setOnClickListener(view -> {
             String password = etPassword.getText().toString();
             String birthday = etBirthday.getText().toString();
-            int weight = npWeight.getValue();
+            float weight = Float.parseFloat(npWeight.getText().toString());
 
             VpisUserPodatkov vpis = new VpisUserPodatkov(password, birthday, weight, this);
             vpis.izvediVpise();
 
-            //Toast.makeText(ProfileActivity.this, rezultat, Toast.LENGTH_SHORT).show();
+            VpisWeight vpis2 = new VpisWeight(weight, this);
+            vpis2.izvediVpiseWeight();
         });
 
-        Button btnDelete = findViewById(R.id.btnDelete);
+
         btnDelete.setOnClickListener(view -> {
-            IzbrisUserja izbris = new IzbrisUserja(this);
-            izbris.izvediIzbris();
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Profile")
+                    .setMessage("Are you sure you want to delete your profile?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        IzbrisUserja izbris = new IzbrisUserja(this);
+                        izbris.izvediIzbris();
 
-            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-
+                        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
 
-        Button btnLogout = findViewById(R.id.btnLogout);
+
         btnLogout.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -78,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        Button btnBackToHome = findViewById(R.id.btnBackToHome);
         btnBackToHome.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -88,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void updateUserData(String birthday, int weight) {
         etBirthday.setText(birthday);
-        npWeight.setValue(weight);
+        npWeight.setText(String.valueOf(weight));
     }
 
     private void showDatePicker() {
@@ -100,7 +99,6 @@ public class ProfileActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
-                    // Prikaz izbranega datuma v EditText polju
                     String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
                     etBirthday.setText(selectedDate);
                 },
