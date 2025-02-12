@@ -34,10 +34,9 @@ class DobiVajaPodatke {
     public void izvediDobiVaje() {
         new Thread(() -> {
             String rezultat = dobiVaje();
-            // Po želji lahko prikažemo Toast s sporočilom (npr. ob napaki ali uspehu)
-            callerActivity.runOnUiThread(() ->
+            /*callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
-            );
+            );*/
         }).start();
     }
 

@@ -92,11 +92,6 @@ public class GymActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Ta metoda se kliče iz DobiVajaPodatke, ko so podatki pridobljeni.
-     *
-     * @param history String, ki vsebuje oblikovano zgodovino vaj.
-     */
     public void updateWorkoutHistory(String history) {
         workoutHistory.setText(history);
     }

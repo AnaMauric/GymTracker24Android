@@ -34,9 +34,9 @@ class VpisWeight {
         new Thread(() -> {
             String rezultat = vpisWeight();
 
-            callerActivity.runOnUiThread(() ->
+            /*callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
-            );
+            );*/
         }).start();
     }
 

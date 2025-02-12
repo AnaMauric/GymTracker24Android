@@ -4,8 +4,8 @@
     <string name="rest_uporabnik_uspesno">Uspešno:</string>
     <string name="rest_nepricakovan_odgovor">Nepričakovan odgovor strežnika.</string>
     <string name="napaka_storitev">Napaka pri komunikaciji s strežnikom.</string>
-    <!-- <string name="URL_base_storitve">http://10.0.2.2/gymvaja2/</string> -->
-    <string name="URL_base_storitve">http://192.168.1.103/gymvaja2/</string>
+    <string name="URL_base_storitve">http://10.0.2.2/gymvaja2/</string>
+    <!-- <string name="URL_base_storitve">http://192.168.1.103/gymvaja2/</string> -->
     <string name="URL_rel_vpis_user">userji.php</string>
     <string name="URL_rel_vpis_vaja">exercises.php</string>
     <string name="URL_rel_vpis_weight">weight.php</string>

@@ -37,9 +37,9 @@ class IzbrisUserja {
         new Thread(() -> {
             String rezultat = izbris();
 
-            callerActivity.runOnUiThread(() ->
+            /*callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
-            );
+            );*/
         }).start();
     }
 

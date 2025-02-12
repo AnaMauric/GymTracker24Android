@@ -36,9 +36,9 @@ class IzbrisVaje {
         new Thread(() -> {
             String rezultat = izbrisVaj();
 
-            callerActivity.runOnUiThread(() ->
+            /*callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
-            );
+            );*/
         }).start();
     }
 
@@ -56,7 +56,7 @@ class IzbrisVaje {
             try {
                 int responseCode = connect(username, exercise_name, date);
 
-                if (responseCode == 200) {
+                if (responseCode == 204) {
                     return "Podatki uspešno posodobljeni!";
                 } else {
                     return "Napaka pri shranjevanju podatkov. Koda: " + responseCode;

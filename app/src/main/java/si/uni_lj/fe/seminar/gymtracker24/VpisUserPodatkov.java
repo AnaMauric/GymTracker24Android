@@ -39,9 +39,9 @@ class VpisUserPodatkov {
         new Thread(() -> {
             String rezultat = vpisPodatkov();
 
-            callerActivity.runOnUiThread(() ->
+            /*callerActivity.runOnUiThread(() ->
                     Toast.makeText(callerActivity, rezultat, Toast.LENGTH_SHORT).show()
-            );
+            );*/
         }).start();
     }
 
